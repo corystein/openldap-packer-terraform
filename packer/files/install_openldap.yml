@@ -2,6 +2,7 @@
 - hosts: localhost
   become: true
   vars:
+    web_fqdn: localhost
 
   tasks:
     - name: Install yum packages
@@ -34,3 +35,63 @@
       yum:
         name:
           - phpldapadmin
+
+    - name: install nginx
+      yum:
+        name: nginx
+        state: installed
+
+    - name: create self signed certificate for ssl
+      shell: >
+        openssl req -new -nodes -x509 -subj "/C=NL/ST=Noord Holland/L=Lutjebroek/CN={{ web_fqdn }}" -days 3650 -keyout /etc/nginx/server.key -out /etc/nginx/server.crt -extensions v3_ca
+      args:
+        creates: /etc/nginx/server.crt
+
+    - name: generate nginx ssl config
+      shell: |
+        echo "worker_processes  1;
+              events {
+                worker_connections  1024;
+              }
+              http {
+                include /etc/nginx/mime.types;
+                gzip  on;
+                gzip_http_version 1.1;
+                gzip_comp_level 2;
+                gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+                server {
+                  listen *:443;
+                  ssl on;
+                  server_name {{ web_fqdn }};
+                  ssl_certificate /etc/nginx/server.crt;
+                  ssl_certificate_key /etc/nginx/server.key;
+                  location / {
+                    proxy_pass http://127.0.0.1:3000;
+                  }
+                }
+              }" > /etc/nginx/nginx.conf
+
+    - name: restart nginx service
+      systemd:
+        name: nginx
+        enabled: yes
+        state: restarted
+
+    - name: set firewalld to be enabled at boot and start it
+      systemd:
+        name: firewalld
+        enabled: yes
+        state: started
+
+    - name: enable https port in the firewall
+      firewalld:
+        port: 443/tcp
+        state: enabled
+        permanent: yes
+        immediate: yes
+
+    - name: set seboolean httpd to allow network connections
+      seboolean:
+        name: httpd_can_network_connect
+        state: yes
+        persistent: yes
