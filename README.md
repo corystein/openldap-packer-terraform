@@ -1,19 +1,18 @@
 # Ansible Semaphore Packer/Terraform Deployment Scripts
 
-[![CircleCI](https://circleci.com/gh/corystein/semaphore-packer-terraform.svg?style=svg)](https://circleci.com/gh/corystein/semaphore-packer-terraform)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2c2458413a574197b8cb1a787774761b)](https://www.codacy.com/app/corystein/semaphore-packer-terraform?utm_source=github.com&utm_medium=referral&utm_content=corystein/semaphore-packer-terraform&utm_campaign=Badge_Grade)
+[![CircleCI](https://circleci.com/gh/corystein/openldap-packer-terraform.svg?style=svg)](https://circleci.com/gh/corystein/openldap-packer-terraform)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/16c908be11684e4eba5b2696efa8a765)](https://www.codacy.com/app/corystein/openldap-packer-terraform?utm_source=github.com&utm_medium=referral&utm_content=corystein/openldap-packer-terraform&utm_campaign=Badge_Grade)
 
 ## Links
 
-- [Releases](https://github.com/corystein/semaphore-packer-terraform/releases)
-- [Ansible Semaphore](https://github.com/ansible-semaphore/semaphore)
+- [Open LDAP](https://www.openldap.org/)
 - [Packer](https://packer.io)
 - [Terraform](https://terraform.io)
 - [Azure](https://portal.azure.com)
 
 ## Introduction
 
-This project includes scripts to deploy [Ansible Semaphore](https://github.com/ansible-semaphore/semaphore) using [Packer](https://packer.io) and [Terraform](https://terraform.io). Packer script deploys the latest Ansible Semaphore into a single VM image.
+This project includes scripts to deploy [Open LDAP](https://www.openldap.org/) using [Packer](https://packer.io) and [Terraform](https://terraform.io). Packer script deploys the latest Ansible Semaphore into a single VM image.
 
 ## Packer Image
 

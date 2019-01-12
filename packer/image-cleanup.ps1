@@ -30,7 +30,7 @@ param(
     [string] $SubscriptionId,
     [string] $ResourceGroup = "PZI-GXUS-G-RGP-PADM-P001",
     [int] $DaysToDelete = 7,
-    [string] $ImagePattern,
+    [string] $ImagePattern = "openldap",
     [switch] $KeepOnlyLatest
 )
 
@@ -58,7 +58,8 @@ if ([String]::IsNullOrWhiteSpace($(Get-Command az -ErrorAction SilentlyContinue 
 function Get-PackerImages {
     param(
         $SubscriptionId,
-        $ResourceGroupName
+        $ResourceGroupName,
+        $Pattern
     )
 
     Process {
@@ -97,7 +98,9 @@ function Get-PackerImages {
                 $object.DateCreated = $EndDatePart
 
                 # Add object to collection
-                $objectCollection += $object
+                if ($_.name -like "*$($Pattern)*") {
+                    $objectCollection += $object
+                }
             }
         }
 
@@ -175,7 +178,7 @@ function main() {
         }
         #>
 
-        $packerImages = Get-PackerImages -SubscriptionId $SubscriptionId -ResourceGroupName $ResourceGroup
+        $packerImages = Get-PackerImages -SubscriptionId $SubscriptionId -ResourceGroupName $ResourceGroup -Pattern $ImagePattern
 
         # Get most recent image
         #$LatestImage = $($objectCollection | Sort-Object DateCreated | Select-Object -Last 1 | Select-Object -Property Name).Name
