@@ -1,0 +1,16 @@
+---
+- hosts: localhost
+  become: true
+  vars:
+
+  tasks:
+    - name: Install yum packages
+      yum:
+        name:
+          - openldap
+          - compat-openldap
+          - openldap-clients
+          - openldap-servers
+          - openldap-servers-sql
+          - openldap-devel
+        state: installed
