@@ -20,3 +20,17 @@
         name: slapd
         enabled: yes
         state: started
+
+    - name: Install extra PHP packages
+      yum:
+        name:
+          - php-ldap
+          - php-mbstring
+          - php-pear
+          - php-xml
+          - epel-release
+
+    - name: Install yum phpLDAPAdmin
+      yum:
+        name:
+          - phpldapadmin
