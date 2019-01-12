@@ -14,3 +14,9 @@
           - openldap-servers-sql
           - openldap-devel
         state: installed
+
+    - name: Start and enable slapd
+      systemd:
+        name: slapd
+        enabled: yes
+        state: started
